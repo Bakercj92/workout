@@ -221,6 +221,46 @@ body.resting .tabbar{display:none}
   color:#e6edf3;font-size:15px;margin:4px 0 2px}
 .btn.danger{background:#331416;color:#f0787f;font-weight:640}
 .btn.danger:active{background:#3f191c}
+
+/* ---- trends / analytics ---- */
+.tempty{color:#6e7883;font-size:12.5px;line-height:1.5;padding:4px 0}
+.e1grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.e1card{background:#12161c;border:1px solid #1f252d;border-radius:12px;padding:11px 12px;min-height:96px}
+.e1card .nm{font-size:12px;color:#9aa4ae;font-weight:650}
+.e1card .val{font-size:23px;font-weight:770;letter-spacing:-.5px;margin-top:2px;line-height:1}
+.e1card .val small{font-size:12px;color:#7d8792;font-weight:600}
+.e1card .dl{font-size:11.5px;font-weight:650;margin-top:3px}
+.e1card .dl.up{color:#5fd88a}.e1card .dl.dn{color:#f0787f}.e1card .dl.fl{color:#7d8792}
+.e1card .one{font-size:11.5px;color:#6e7883;margin-top:6px;line-height:1.4}
+.e1card svg{display:block;width:100%;height:30px;margin-top:9px;overflow:visible}
+
+.mrow{display:flex;align-items:center;gap:9px;margin:8px 0}
+.mrow .ml{width:70px;font-size:12.5px;color:#c9d3dd;flex:none}
+.mrow .mt{flex:1;height:15px;background:#0f1319;border-radius:5px;position:relative;overflow:hidden}
+.mrow .mf{position:absolute;left:0;top:0;bottom:0;border-radius:5px 0 0 5px}
+.mrow .mf.ok{background:#2f6b46}.mrow .mf.un{background:#5a4a26}
+.mrow .mk{position:absolute;top:-1px;bottom:-1px;width:2px;background:#e6edf3;opacity:.8;border-radius:1px}
+.mrow .mv{width:64px;text-align:right;font-size:11.5px;color:#7d8792;flex:none;font-variant-numeric:tabular-nums}
+.mrow .mv b{color:#e6edf3;font-weight:650}
+
+.prlift{padding:9px 0;border-top:1px solid #1f252d}
+.prlift:first-child{border-top:none;padding-top:0}
+.prlift .ph{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.prlift .ph .pn{font-size:13.5px;font-weight:650}
+.prlift .ph .pm{font-size:16px;font-weight:770;color:#5fd88a;flex:none}
+.prlift .ph .pm small{font-size:10.5px;color:#7d8792;font-weight:600}
+.prlift .pr{margin-top:5px;display:flex;flex-wrap:wrap;gap:5px}
+.prlift .pr span{background:#12161c;border:1px solid #1f252d;border-radius:6px;padding:2px 7px;font-size:11.5px;color:#8b95a0}
+.prlift .pr b{color:#c9d3dd;font-weight:650}
+
+.cal{display:flex;flex-direction:column;gap:3px}
+.calhd,.calrow{display:grid;grid-template-columns:40px repeat(7,1fr) 22px;gap:3px;align-items:center}
+.calhd span{text-align:center;font-size:10px;color:#5b6670}
+.calrow .cw{font-size:10px;color:#6e7883;text-align:right;white-space:nowrap}
+.calrow .cd{height:17px;border-radius:4px;background:#12161c}
+.calrow .cd.on{background:#4ade80}
+.calrow .cc{font-size:11px;text-align:center;color:#5b6670;font-variant-numeric:tabular-nums}
+.calrow.hit .cc{color:#5fd88a;font-weight:700}
 </style>
 </head>
 <body>
@@ -324,6 +364,30 @@ body.resting .tabbar{display:none}
     <div class="card"><button class="btn" id="dHomeBtn">Back to home</button></div>
   </div>
 
+  <!-- ============ TRENDS ============ -->
+  <div class="screen" id="scTrends">
+    <div class="card">
+      <h2>Estimated 1RM</h2>
+      <div class="muted">What your best set each session predicts you could lift once &mdash; so you can watch strength move without ever maxing out.</div>
+      <div id="tE1rm" style="margin-top:13px"></div>
+    </div>
+    <div class="card">
+      <h2>Sets per muscle &middot; this week</h2>
+      <div class="muted" id="tVolSub">How much you&rsquo;ve actually done against this week&rsquo;s plan.</div>
+      <div id="tVol" style="margin-top:13px"></div>
+    </div>
+    <div class="card">
+      <h2>Personal records</h2>
+      <div class="muted">Your four main lifts: best estimated max, and heaviest set at each rep count. No tonnage.</div>
+      <div id="tPr" style="margin-top:11px"></div>
+    </div>
+    <div class="card">
+      <h2>Showing up</h2>
+      <div class="muted">Days trained each week. Green count means you hit your 3&ndash;4&times;/week target.</div>
+      <div id="tCal" style="margin-top:13px"></div>
+    </div>
+  </div>
+
 </div>
 
 <!-- rest timer -->
@@ -346,6 +410,7 @@ body.resting .tabbar{display:none}
 <div class="tabbar" id="tabbar">
   <button class="tab on" data-tab="Home"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/></svg>Home</button>
   <button class="tab" data-tab="History"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h16"/></svg>History</button>
+  <button class="tab" data-tab="Trends"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M6 20v-5M12 20v-9M18 20v-13"/></svg>Trends</button>
 </div>
 
 <!-- modals -->
@@ -662,15 +727,16 @@ function buildWorkout(week, sesIdx, readiness) {
 let SCREEN = "home";
 function show(name) {
   SCREEN = name;
-  ["Home", "History", "Ready", "Work", "Done"].forEach(n => $("#sc" + n).classList.toggle("on", "sc" + n === "sc" + name));
+  ["Home", "History", "Trends", "Ready", "Work", "Done"].forEach(n => $("#sc" + n).classList.toggle("on", "sc" + n === "sc" + name));
   const inFlow = (name === "Ready" || name === "Work" || name === "Done");
-  $("#backBtn").style.display = (name === "Home" || name === "History" || name === "Done") ? "none" : "grid";
+  $("#backBtn").style.display = (name === "Home" || name === "History" || name === "Trends" || name === "Done") ? "none" : "grid";
   $("#bottomBar").style.display = (name === "Ready") ? "block" : "none";
   $("#tabbar").style.display = inFlow ? "none" : "flex";
   document.querySelectorAll("#tabbar .tab").forEach(b => b.classList.toggle("on", b.dataset.tab === name));
   window.scrollTo(0, 0);
   if (name === "Home") renderHome();
   if (name === "History") renderHistory();
+  if (name === "Trends") renderTrends();
   if (name === "Ready") renderReady();
   if (name === "Work") renderWork();
 }
@@ -1179,6 +1245,208 @@ function renderHistory() {
     row.onclick = () => openEdit(rec.id);
     box.appendChild(row);
   });
+}
+
+/* ============================ analytics (Trends) ============================ */
+const MAIN_LIFTS = [
+  { key: "bench", name: "Bench" },
+  { key: "squat", name: "Squat" },
+  { key: "ohp", name: "OHP" },
+  { key: "deadlift", name: "Deadlift" }
+];
+const MNAME = { biceps: "Biceps", triceps: "Triceps", hams: "Hams", back: "Back", glutes: "Glutes", chest: "Chest", delts: "Delts", quads: "Quads", glute_med: "Glute med", traps: "Traps", calves: "Calves" };
+
+/* Epley e1RM for one logged set; skip warm-ups, bad data, and rep counts too high to estimate a 1RM. */
+function setE1rm(row) {
+  if (!row || row.type === "warmup") return 0;
+  const w = +row.w, r = +row.r;
+  if (!(w > 0) || !(r >= 1) || r > 12) return 0;
+  return w * (1 + r / 30);
+}
+/* per session, the best e1RM for one lift, oldest to newest */
+function liftSeries(key) {
+  const hist = S.history.slice().sort((a, b) => (a.finishedAt || 0) - (b.finishedAt || 0));
+  const out = [];
+  hist.forEach(rec => {
+    const ex = (rec.ex || []).find(x => x.key === key);
+    if (!ex) return;
+    let best = 0;
+    (ex.rows || []).forEach(row => { const e = setE1rm(row); if (e > best) best = e; });
+    if (best > 0) out.push({ t: rec.finishedAt || 0, e: best });
+  });
+  return out;
+}
+function sparkline(pts) {
+  const W = 120, H = 30, n = pts.length;
+  if (n < 2) return "";
+  const es = pts.map(p => p.e), lo = Math.min.apply(null, es), hi = Math.max.apply(null, es), span = (hi - lo) || 1;
+  const x = i => (i / (n - 1)) * W, y = e => H - 2 - ((e - lo) / span) * (H - 4);
+  let d = "";
+  pts.forEach((p, i) => { d += (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p.e).toFixed(1) + (i < n - 1 ? " " : ""); });
+  return "<svg viewBox='0 0 " + W + " " + H + "' preserveAspectRatio='none'>" +
+    "<path d='" + d + "' fill='none' stroke='#4ade80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/>" +
+    "<circle cx='" + x(n - 1).toFixed(1) + "' cy='" + y(pts[n - 1].e).toFixed(1) + "' r='2.6' fill='#4ade80'/></svg>";
+}
+function renderE1rm() {
+  const box = $("#tE1rm"); box.innerHTML = "";
+  const grid = el("div", "e1grid");
+  MAIN_LIFTS.forEach(L => {
+    const pts = liftSeries(L.key);
+    const card = el("div", "e1card");
+    card.appendChild(el("div", "nm", L.name));
+    if (!pts.length) {
+      card.appendChild(el("div", "one", "No sets logged yet."));
+    } else {
+      const last = pts[pts.length - 1].e;
+      card.appendChild(el("div", "val", Math.round(last) + " <small>" + UN() + "</small>"));
+      if (pts.length < 2) {
+        card.appendChild(el("div", "one", "Logged once — one more to draw the line."));
+      } else {
+        const d = Math.round(last - pts[pts.length - 2].e);
+        const cls = d > 0 ? "up" : d < 0 ? "dn" : "fl";
+        const txt = d > 0 ? "▲ +" + d + " vs last" : d < 0 ? "▼ −" + Math.abs(d) + " vs last" : "≈ same vs last";
+        card.appendChild(el("div", "dl " + cls, txt));
+        card.insertAdjacentHTML("beforeend", sparkline(pts));
+      }
+    }
+    grid.appendChild(card);
+  });
+  box.appendChild(grid);
+}
+
+/* credit-weighted actual sets per muscle for one program week (drop sets = 0.5, warm-ups excluded) */
+function weekMuscleActual(wk) {
+  const acc = {};
+  S.history.forEach(rec => {
+    if (rec.week !== wk) return;
+    (rec.ex || []).forEach(x => {
+      const def = findDef(rec.sesIdx, x.key);
+      if (!def || !def.credits) return;
+      (x.rows || []).forEach(row => {
+        if (row.type === "warmup") return;
+        const units = row.type === "drop" ? 0.5 : 1;
+        for (const m in def.credits) acc[m] = (acc[m] || 0) + units * def.credits[m];
+      });
+    });
+  });
+  return acc;
+}
+function renderVol() {
+  const box = $("#tVol"); box.innerHTML = "";
+  const wk = S.week, n = S.history.filter(r => r.week === wk).length;
+  const plan = DATA.volume[wk] || {};
+  $("#tVolSub").textContent = "Week " + wk + " · " + n + " of 4 sessions logged.";
+  if (n === 0) {
+    box.appendChild(el("div", "tempty", "No sessions logged this week yet. Your planned doses are on Home — this fills in as you train."));
+    return;
+  }
+  const actual = weekMuscleActual(wk);
+  const muscles = Object.keys(plan).sort((a, b) => plan[b] - plan[a]);
+  let scaleMax = 1;
+  muscles.forEach(m => { scaleMax = Math.max(scaleMax, actual[m] || 0, plan[m] || 0); });
+  muscles.forEach(m => {
+    const a = actual[m] || 0, p = plan[m] || 0;
+    const row = el("div", "mrow");
+    row.appendChild(el("div", "ml", MNAME[m] || m));
+    const track = el("div", "mt");
+    const fill = el("div", "mf " + (a + 0.01 >= p ? "ok" : "un"));
+    fill.style.width = (a <= 0 ? 0 : Math.max(3, Math.min(100, (a / scaleMax) * 100))) + "%";
+    track.appendChild(fill);
+    const tick = el("div", "mk"); tick.style.left = Math.min(100, (p / scaleMax) * 100) + "%";
+    track.appendChild(tick);
+    row.appendChild(track);
+    row.appendChild(el("div", "mv", "<b>" + fmt(a) + "</b> / " + fmt(p)));
+    box.appendChild(row);
+  });
+}
+
+function renderPr() {
+  const box = $("#tPr"); box.innerHTML = "";
+  MAIN_LIFTS.forEach(L => {
+    let bestE = 0; const byRep = {};
+    S.history.forEach(rec => {
+      const ex = (rec.ex || []).find(x => x.key === L.key);
+      if (!ex) return;
+      (ex.rows || []).forEach(row => {
+        if (row.type === "warmup") return;
+        const w = +row.w, r = +row.r;
+        if (!(w > 0) || !(r >= 1)) return;
+        const e = setE1rm(row);
+        if (e > bestE) bestE = e;
+        if (r <= 12 && (!byRep[r] || w > byRep[r])) byRep[r] = w;
+      });
+    });
+    const blk = el("div", "prlift");
+    const h = el("div", "ph");
+    h.appendChild(el("div", "pn", L.name));
+    h.appendChild(el("div", "pm", bestE > 0 ? Math.round(bestE) + " <small>" + UN() + " e1RM</small>" : "—"));
+    blk.appendChild(h);
+    const reps = Object.keys(byRep).map(Number).sort((a, b) => a - b);
+    if (reps.length) {
+      const pr = el("div", "pr");
+      reps.forEach(r => pr.appendChild(el("span", null, "<b>" + fmt(byRep[r]) + "</b> × " + r)));
+      blk.appendChild(pr);
+    } else {
+      blk.appendChild(el("div", "tempty", "No sets logged yet."));
+    }
+    box.appendChild(blk);
+  });
+}
+
+function calMonday(ms) {
+  const d = new Date(ms); d.setHours(12, 0, 0, 0);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  return d;
+}
+function dayKey(d) { return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+function renderCal() {
+  const box = $("#tCal"); box.innerHTML = "";
+  if (!S.history.length) {
+    box.appendChild(el("div", "tempty", "Your training days will fill in here as you log sessions."));
+    return;
+  }
+  const days = {}; let first = Infinity;
+  S.history.forEach(rec => {
+    if (!rec.finishedAt) return;
+    const d = new Date(rec.finishedAt); d.setHours(12, 0, 0, 0);
+    days[dayKey(d)] = true;
+    if (rec.finishedAt < first) first = rec.finishedAt;
+  });
+  const now = Date.now();
+  const start = calMonday(first === Infinity ? now : first), end = calMonday(now);
+  let rows = [];
+  for (let m = new Date(start); m <= end; m.setDate(m.getDate() + 7)) rows.push(new Date(m));
+  if (rows.length > 14) rows = rows.slice(rows.length - 14);
+  const cal = el("div", "cal");
+  const hd = el("div", "calhd");
+  hd.appendChild(el("span"));
+  ["M", "T", "W", "T", "F", "S", "S"].forEach(x => hd.appendChild(el("span", null, x)));
+  hd.appendChild(el("span"));
+  cal.appendChild(hd);
+  rows.forEach(mon => {
+    let count = 0;
+    const row = el("div", "calrow");
+    row.appendChild(el("div", "cw", new Date(mon).toLocaleDateString(undefined, { month: "short", day: "numeric" })));
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(mon); d.setDate(d.getDate() + i); d.setHours(12, 0, 0, 0);
+      const on = !!days[dayKey(d)];
+      if (on) count++;
+      row.appendChild(el("div", "cd" + (on ? " on" : "")));
+    }
+    row.appendChild(el("div", "cc", String(count)));
+    if (count >= 3) row.classList.add("hit");
+    cal.appendChild(row);
+  });
+  box.appendChild(cal);
+}
+
+function renderTrends() {
+  $("#topTitle").firstChild.textContent = "Trends";
+  $("#topSub").textContent = "Week " + S.week + " · " + S.history.length + (S.history.length === 1 ? " session" : " sessions") + " logged";
+  renderE1rm();
+  renderVol();
+  renderPr();
+  renderCal();
 }
 
 let EDIT_ID = null, EDIT_SNAP = null;
